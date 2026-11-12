@@ -18,8 +18,7 @@ if ($errors) respond(['success' => false, 'message' => implode(' ', $errors)], 4
 
 try {
     $pdo = mysql();
-    $stmt = $pdo->prepare('SELECT 1 FROM users WHERE username = ? OR email = ? LIMIT 1');
-    $stmt->execute([$username, $email]);
+$stmt = mysql()->prepare('SELECT id, username, password_hash FROM users WHERE email = ? OR LOWER(username) = ? LIMIT 1');    $stmt->execute([$username, $email]);
     if ($stmt->fetch()) respond(['success' => false, 'message' => 'Username or email already registered.'], 409);
 
     $stmt = $pdo->prepare('INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)');

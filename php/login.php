@@ -17,8 +17,7 @@ try {
         respond(['success' => false, 'message' => 'Too many attempts. Try again in 15 minutes.'], 429);
     }
 
-    $stmt = mysql()->prepare('SELECT id, username, password_hash FROM users WHERE email = ? OR username = ? LIMIT 1');
-    $stmt->execute([$identity, $identity]);
+$stmt = mysql()->prepare('SELECT id, username, password_hash FROM users WHERE email = ? OR LOWER(username) = ? LIMIT 1');    $stmt->execute([$identity, $identity]);
     $user = $stmt->fetch();
 
     if (!$user || !password_verify($password, $user['password_hash'])) {
